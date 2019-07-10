@@ -1,0 +1,17 @@
+venv/
+*.pyc/
+*.xml/
+
+*.sqlite3
+*.pyc
+
+# User-specific stuff:
+.idea/**/workspace.xml
+.idea/
+
+
+
+
+*.iml
+modules.xml
+.idea/misc.xml
