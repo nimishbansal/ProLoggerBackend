@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
 from Project.models import LogEntry
+from utility.serializer_utils import DisplaySelectedFieldMixin
 
 
-class LogEntrySerializer(serializers.ModelSerializer):
+class LogEntrySerializer(DisplaySelectedFieldMixin, serializers.ModelSerializer):
     level_name = serializers.SerializerMethodField()
 
     class Meta:
