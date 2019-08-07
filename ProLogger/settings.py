@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
+import os, raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm%%q+%j)kt20s&r_e3=)s&m*7p5vj=fxe@5fdz*s%l&%l85h+5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -122,3 +122,39 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+INSTALLED_APPS += [
+    'raven.contrib.django.raven_compat',
+]
+
+RAVEN_CONFIG = {
+    'dsn': "https://1591d25912154953b7c0f1a4ad62f090@sentry.io/1442732",
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}
+
+MIDDLEWARE = ['raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',] + MIDDLEWARE
+
+LOGGING = {
+    'version': 1,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'disable_existing_loggers': False,
+    'handlers': {
+        'sentry_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            'class': 'raven.contrib.django.handlers.SentryHandler'
+            # 'class': 'logging_utils.DjLogHandler',
+        }
+    },
+    'loggers': {
+        'sentry_debug_logger': {
+            'handlers': ['sentry_debug'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

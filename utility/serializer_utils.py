@@ -1,3 +1,6 @@
+from rest_framework import serializers
+
+
 class DisplaySelectedFieldMixin:
     """
     It is a mixin used to show specific keys only for response dict on the basis of keys mentioned in
@@ -42,3 +45,13 @@ class DisplaySelectedFieldMixin:
                 data.pop(field)
 
         return data
+
+
+class CompleteDateTimeSerializer(serializers.Serializer):
+    year = serializers.IntegerField()
+    month = serializers.IntegerField()
+    day = serializers.IntegerField()
+    hour = serializers.IntegerField()
+    minute = serializers.IntegerField()
+    second = serializers.IntegerField()
+    microsecond = serializers.IntegerField()

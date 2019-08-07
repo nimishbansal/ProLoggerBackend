@@ -1,7 +1,14 @@
+import logging
 import sys
 from logging import Handler, getLevelName
 import requests
+from raven.contrib.django.handlers import SentryHandler
+
 requests.get("https://google.co.in")
+
+# /home/nimish/PycharmProjects/ProLoggerBackend/ProLogger/venv/lib/python3.6/site-packages/raven/base.py:731
+def get_dj_logger():
+    return logging.getLogger('sentry_debug_logger')
 
 
 class DjLogHandler(Handler):
@@ -18,6 +25,7 @@ class DjLogHandler(Handler):
 
         If stream is not specified, sys.stderr is used.
         """
+        print("hmmou")
         Handler.__init__(self)
         if stream is None:
             stream = sys.stderr
@@ -27,7 +35,6 @@ class DjLogHandler(Handler):
         """
         Flushes the stream.
         """
-        print("flush")
         self.acquire()
         try:
             if self.stream and hasattr(self.stream, "flush"):

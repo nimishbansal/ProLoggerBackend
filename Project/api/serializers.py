@@ -1,11 +1,12 @@
 from rest_framework import serializers
 
 from Project.models import LogEntry
-from utility.serializer_utils import DisplaySelectedFieldMixin
+from utility.serializer_utils import DisplaySelectedFieldMixin, CompleteDateTimeSerializer
 
 
 class LogEntrySerializer(DisplaySelectedFieldMixin, serializers.ModelSerializer):
     level_name = serializers.SerializerMethodField()
+    created_at = CompleteDateTimeSerializer()
 
     class Meta:
         fields = '__all__'

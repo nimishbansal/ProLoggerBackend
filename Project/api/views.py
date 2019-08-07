@@ -1,5 +1,6 @@
 from functools import partial
 
+import time
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 
@@ -24,4 +25,15 @@ class LogEntryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = LogEntry.objects.all()
 
     def get_object(self):
-        return get_object_or_404(LogEntry.objects.using('default'), project_id=self.kwargs['project_id'], id=self.kwargs['pk'])
+        return get_object_or_404(LogEntry.objects.using('default'), project_id=self.kwargs['project_id'],
+                                 id=self.kwargs['pk'])
+
+
+def sample(request):
+    a = 40
+    b = 50
+    print('hehehe')
+    print(a/(b-50))
+    print("hahahah")
+    print('hohoho')
+    return
