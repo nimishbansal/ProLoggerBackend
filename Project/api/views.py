@@ -17,7 +17,7 @@ class LogEntryListView(ListAPIView):
     serializer_class = partial(LogEntrySerializer, exclude_fields=[])
 
     def get_queryset(self):
-        return LogEntry.objects.filter(project_id=self.kwargs['project_id'])
+        return LogEntry.objects.filter(project_id=self.kwargs['project_id']).order_by('-id')
 
 
 class LogEntryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -28,6 +28,9 @@ class LogEntryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
         return get_object_or_404(LogEntry.objects.using('default'), project_id=self.kwargs['project_id'],
                                  id=self.kwargs['pk'])
 
+    def delete(self, request, *args, **kwargs):
+        time.sleep(5)
+        return super(LogEntryRetrieveUpdateDestroyView, self).delete(request, *args, **kwargs)
 
 def sample(request):
     a = 40

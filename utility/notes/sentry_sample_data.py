@@ -92,5 +92,5 @@ def print_stacktrace(frames_list):
 
 
 frames_list = emit_data['exception']['values'][0]['stacktrace']['frames']
-
 print_stacktrace(frames_list)
+q=emit_data['exception']['values'][0]['stacktrace']['frames']

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm%%q+%j)kt20s&r_e3=)s&m*7p5vj=fxe@5fdz*s%l&%l85h+5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -37,10 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'django_mysql',
+
     'DJLog',
     'Project',
 
-    'rest_framework',
+
+
 ]
 
 MIDDLEWARE = [
@@ -76,14 +81,20 @@ WSGI_APPLICATION = 'ProLogger.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'prologger',
+        'USER': 'root',
+        'PASSWORD': 'test',
+        'HOST': '0.0.0.0',   # Or an IP Address that your DB is hosted on
+        'PORT': '',
+        'OPTIONS': {
+            # Tell MySQLdb to connect with 'utf8mb4' character set
+            'charset': 'utf8mb4',
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -132,6 +143,13 @@ RAVEN_CONFIG = {
     'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
+
 MIDDLEWARE = ['raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',] + MIDDLEWARE
 
 LOGGING = {
@@ -145,7 +163,7 @@ LOGGING = {
     'handlers': {
         'sentry_debug': {
             'level': 'DEBUG',
-            'filters': ['require_debug_false'],
+            # 'filters': ['require_debug_false'],
             'class': 'raven.contrib.django.handlers.SentryHandler'
             # 'class': 'logging_utils.DjLogHandler',
         }
