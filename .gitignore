@@ -5,6 +5,8 @@ venv/
 *.sqlite3
 *.pyc
 
+.env
+
 # User-specific stuff:
 .idea/**/workspace.xml
 .idea/

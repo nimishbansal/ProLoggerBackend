@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from ..api.serializers import LogEntrySerializer
 from ..models import LogEntry
+import logging
 
 
 class StandardPagination(PageNumberPagination):
@@ -32,11 +33,13 @@ class LogEntryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
         time.sleep(5)
         return super(LogEntryRetrieveUpdateDestroyView, self).delete(request, *args, **kwargs)
 
+
 def sample(request):
+    logging.getLogger('sentry_debug_logger').debug("haww", extra={"newtag": "ok"})
     a = 40
     b = 50
     print('hehehe')
-    print(a/(b-50))
+    print(a / (b - 50))
     print("hahahah")
     print('hohoho')
     return

@@ -12,7 +12,7 @@ class LogEntry(models.Model):
     level = models.IntegerField(choices=LogEntryLevelChoices)
     title = models.CharField(max_length=100)
     message = models.TextField()
-
+    tags = JSONField(null=True, blank=True, default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
