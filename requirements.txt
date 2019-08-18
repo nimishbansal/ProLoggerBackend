@@ -1,5 +1,6 @@
 certifi==2019.6.16
 chardet==3.0.4
+Click==7.0
 Django==2.2.3
 django-mysql==3.2.0
 djangorestframework==3.10.1
