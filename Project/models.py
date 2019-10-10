@@ -1,4 +1,9 @@
+import json
+
+import requests
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django_mysql.models import JSONField
 
 from .utils import LogEntryLevelChoices
@@ -25,3 +30,16 @@ class ExceptionStackTrace(models.Model):
 # def log_entry_post_save_hook(sender, instance, created, **kwargs):
 #     if created:
 #         ExceptionStackTrace(log_entry=instance).save()
+
+@receiver(post_save, sender=LogEntry, dispatch_uid="log_entry_saved")
+def log_entry_post_save_hook(sender, instance, **kwargs):
+    data = {
+        "id": instance.id,
+        "level_name": instance.get_level_display(),
+        "project_id": 1,
+        "level": instance.level,
+        "title": instance.title,
+        "message": instance.message
+    }
+    print(data)
+    requests.post("http://0.0.0.0:8080/newevent/", data=json.dumps(data))
