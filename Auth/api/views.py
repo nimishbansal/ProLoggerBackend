@@ -1,5 +1,8 @@
 import random
 
+from django.contrib.auth.models import User
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -33,10 +36,16 @@ def verify_otp(request):
     else:
         if otp.is_expired():
             error_code = EXPIRED
-        elif otp.key != request.data['key']:
+        elif str(otp.key) != request.data['key']:
             error_code = INVALID
         else:
-            return Response(data={STATUS: SUCCESS})
+            user = User.objects.filter(username=otp.phone_no).first()
+            if user is None:
+                user = User.objects.create_user(username=str(otp.phone_no),
+                                                password=User.objects.make_random_password(length=10))
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response(data={STATUS: SUCCESS, 'key': token.key})
 
     if error_code is not None:
-        return Response(data=get_error_response_data(error_code=error_code, status=ERROR))
+        return Response(data=get_error_response_data(error_code=error_code, status=ERROR),
+                        status=status.HTTP_400_BAD_REQUEST)

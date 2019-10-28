@@ -1,12 +1,19 @@
 import json
 
 import requests
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_mysql.models import JSONField
 
 from .utils import LogEntryLevelChoices
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class LogEntry(models.Model):

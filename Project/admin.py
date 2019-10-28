@@ -3,7 +3,12 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.admin import ModelAdmin
 
-from Project.models import LogEntry, ExceptionStackTrace
+from Project.models import LogEntry, ExceptionStackTrace, Project
+
+
+@admin.register(Project)
+class ProjectModelAdmin(ModelAdmin):
+    list_display = ('id', 'name', 'created_at',)
 
 
 @admin.register(LogEntry)

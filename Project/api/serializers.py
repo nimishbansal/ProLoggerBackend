@@ -3,8 +3,14 @@ import json
 from rest_framework import serializers
 from rest_framework.fields import JSONField
 
-from Project.models import LogEntry, ExceptionStackTrace
+from Project.models import LogEntry, ExceptionStackTrace, Project
 from utility.serializer_utils import DisplaySelectedFieldMixin, CompleteDateTimeSerializer
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'name', )
 
 
 class ExceptionStackTraceSerializer(serializers.ModelSerializer):

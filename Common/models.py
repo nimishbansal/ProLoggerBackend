@@ -13,7 +13,7 @@ from utility.sms_utils import send_sms
 class OTP(models.Model):
     phone_no = models.CharField(unique=True, max_length=16)
     key = models.IntegerField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now=True)
 
     def is_expired(self):
         if timezone.now() - self.timestamp > timedelta(minutes=2):
