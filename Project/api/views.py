@@ -2,17 +2,49 @@ from functools import partial
 
 import time
 
+from django.http import Http404
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404, ListCreateAPIView, \
-    GenericAPIView
+    GenericAPIView, CreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from ..api.serializers import LogEntrySerializer, ProjectSerializer
+from Common.utils import STATUS, SUCCESS, ERROR
+from ..api.serializers import LogEntrySerializer, ProjectSerializer, LogEntryCreateSerializer
 from ..models import LogEntry, Project
 import logging
+
+
+class ProjectSecretKeyVerificationView(GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            get_object_or_404(Project, secret_key=request.data['secret_key'])
+            return Response({STATUS: SUCCESS})
+        except Http404:
+            return Response({STATUS: ERROR, 'message': 'No project found for this corresponding key'})
+
+
+class LogEntryCreateView(CreateAPIView):
+    serializer_class = LogEntryCreateSerializer
+    project = None
+
+    def create(self, request, *args, **kwargs):
+        print(request.headers)
+        self.project = get_object_or_404(Project, secret_key=request.headers['Project-Token'])
+        print(request.data)
+        try:
+            r = super(LogEntryCreateView, self).create(request, *args, **kwargs)
+        except Exception as E:
+            print(E)
+        # return Response({STATUS: SUCCESS})
+
+    def perform_create(self, serializer):
+        try:
+            serializer.save(project_id=self.project.id)
+        except Exception as E:
+            print(E)
 
 
 class StandardPagination(PageNumberPagination):

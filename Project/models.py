@@ -13,6 +13,7 @@ from .utils import LogEntryLevelChoices
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    secret_key = models.CharField(max_length=200, null=True, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -22,8 +23,8 @@ class LogEntry(models.Model):
 
     project_id = models.IntegerField()
     level = models.IntegerField(choices=LogEntryLevelChoices)
-    title = models.CharField(max_length=100)
-    message = models.TextField()
+    title = models.CharField(max_length=100, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
     tags = JSONField(null=True, blank=True, default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
 

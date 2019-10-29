@@ -10,13 +10,19 @@ from utility.serializer_utils import DisplaySelectedFieldMixin, CompleteDateTime
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', )
+        fields = ('id', 'name',)
 
 
 class ExceptionStackTraceSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = ExceptionStackTrace
+
+
+class LogEntryCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogEntry
+        exclude = ('project_id', )
 
 
 class LogEntrySerializer(DisplaySelectedFieldMixin, serializers.ModelSerializer):
