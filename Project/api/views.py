@@ -1,3 +1,4 @@
+import traceback
 from functools import partial
 
 import time
@@ -31,20 +32,23 @@ class LogEntryCreateView(CreateAPIView):
     project = None
 
     def create(self, request, *args, **kwargs):
-        print(request.headers)
         self.project = get_object_or_404(Project, secret_key=request.headers['Project-Token'])
         print(request.data)
         try:
             r = super(LogEntryCreateView, self).create(request, *args, **kwargs)
         except Exception as E:
+            print("houu")
             print(E)
+            traceback.print_exc()
+            print("touu")
         # return Response({STATUS: SUCCESS})
 
     def perform_create(self, serializer):
         try:
             serializer.save(project_id=self.project.id)
         except Exception as E:
-            print(E)
+            print("error here")
+            traceback.print_exc()
 
 
 class StandardPagination(PageNumberPagination):

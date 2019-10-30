@@ -13,7 +13,7 @@ class ProjectModelAdmin(ModelAdmin):
 
 @admin.register(LogEntry)
 class LogEntryModelAdmin(ModelAdmin):
-    list_display = ('id', 'project_id', 'title', 'message', 'level')
+    list_display = ('id', 'project_id', 'title', 'message', 'level', 'tags')
     list_filter = ('id', 'project_id',)
 
 

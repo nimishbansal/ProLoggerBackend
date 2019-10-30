@@ -44,10 +44,10 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
     data = {
         "id": instance.id,
         "level_name": instance.get_level_display(),
-        "project_id": 1,
+        "project_id": instance.project_id,
         "level": instance.level,
         "title": instance.title,
-        "message": instance.message
+        "message": instance.message,
     }
-    print(data)
+    print(instance.tags)
     requests.post("http://0.0.0.0:8080/newevent/", data=json.dumps(data))
