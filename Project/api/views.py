@@ -93,7 +93,6 @@ class LogEntryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
                                  id=self.kwargs['pk'])
 
     def delete(self, request, *args, **kwargs):
-        time.sleep(5)
         return super(LogEntryRetrieveUpdateDestroyView, self).delete(request, *args, **kwargs)
 
 

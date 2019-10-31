@@ -15,7 +15,6 @@ import os, raven
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'm%%q+%j)kt20s&r_e3=)s&m*7p5vj=fxe@5fdz*s%l&%l85h+5'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -80,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProLogger.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {
@@ -89,7 +86,7 @@ DATABASES = {
         'NAME': 'prologger',
         'USER': 'root',
         'PASSWORD': 'test',
-        'HOST': '0.0.0.0',   # Or an IP Address that your DB is hosted on
+        'HOST': '0.0.0.0',  # Or an IP Address that your DB is hosted on
         'PORT': '',
         'OPTIONS': {
             # Tell MySQLdb to connect with 'utf8mb4' character set
@@ -116,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -129,7 +125,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -152,7 +147,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-MIDDLEWARE = ['raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',] + MIDDLEWARE
+MIDDLEWARE = ['raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware', ] + MIDDLEWARE
 
 LOGGING = {
     'version': 1,
@@ -168,7 +163,7 @@ LOGGING = {
             # 'filters': ['require_debug_false'],
             'class': 'raven.contrib.django.handlers.SentryHandler'
             # 'class': 'logging_utils.DjLogHandler',
-        }
+        },
     },
     'loggers': {
         'sentry_debug_logger': {
@@ -180,8 +175,8 @@ LOGGING = {
 }
 
 # Celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://0.0.0.0:6379'
+CELERY_RESULT_BACKEND = 'redis://0.0.0.0:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -191,3 +186,10 @@ CELERY_ENABLE_UTC = True
 CELERY_BEAT_SCHEDULE = {}
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
+
+# Add this to handlers of your project logging dict
+# 'pro_logger': {
+#     'level': 'DEBUG',
+#     'class': 'prologgersdk.log.ProLoggerHandler',
+#     "secret_key": "1234567890"
+# }

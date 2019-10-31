@@ -1,11 +1,12 @@
 import json
-
+import redis
 import requests
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_mysql.models import JSONField
+from rest_framework.authtoken.models import Token
 
 from .utils import LogEntryLevelChoices
 
@@ -50,4 +51,9 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
         "message": instance.message,
     }
     print(instance.tags)
+    r = redis.StrictRedis()
+    project = Project.objects.get(id=instance.project_id)
+    token, _ = Token.objects.get_or_create(user=project.user)
+    # we publish to onChat with suffix as token key
+    r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
     requests.post("http://0.0.0.0:8080/newevent/", data=json.dumps(data))
