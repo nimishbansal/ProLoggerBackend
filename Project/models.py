@@ -55,5 +55,5 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
     project = Project.objects.get(id=instance.project_id)
     token, _ = Token.objects.get_or_create(user=project.user)
     # we publish to onChat with suffix as token key
-    r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
-    requests.post("http://0.0.0.0:8080/newevent/", data=json.dumps(data))
+    if "onChat" + token.key in list(map(lambda x: x.decode("utf-8"), r.pubsub_channels())):
+        r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
