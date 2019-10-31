@@ -8,12 +8,12 @@ from Project.models import LogEntry, ExceptionStackTrace, Project
 
 @admin.register(Project)
 class ProjectModelAdmin(ModelAdmin):
-    list_display = ('id', 'name', 'created_at',)
+    list_display = ('id', 'name', 'created_at', 'user')
 
 
 @admin.register(LogEntry)
 class LogEntryModelAdmin(ModelAdmin):
-    list_display = ('id', 'project_id', 'title', 'message', 'level', 'tags')
+    list_display = ('id', 'project_id', 'title', 'message', 'level', 'tags',)
     list_filter = ('id', 'project_id',)
 
 

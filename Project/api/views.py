@@ -33,15 +33,14 @@ class LogEntryCreateView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         self.project = get_object_or_404(Project, secret_key=request.headers['Project-Token'])
-        print(request.data)
         try:
             r = super(LogEntryCreateView, self).create(request, *args, **kwargs)
+            return Response({STATUS: SUCCESS})
         except Exception as E:
             print("houu")
             print(E)
             traceback.print_exc()
             print("touu")
-        # return Response({STATUS: SUCCESS})
 
     def perform_create(self, serializer):
         try:
@@ -49,6 +48,9 @@ class LogEntryCreateView(CreateAPIView):
         except Exception as E:
             print("error here")
             traceback.print_exc()
+
+    def get_serializer(self, *args, **kwargs):
+        return super(LogEntryCreateView, self).get_serializer(data=self.request.data['main_data'])
 
 
 class StandardPagination(PageNumberPagination):

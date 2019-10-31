@@ -49,6 +49,13 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
         "level": instance.level,
         "title": instance.title,
         "message": instance.message,
+        "created_at": {
+            'year': instance.created_at.year,
+            'month': instance.created_at.month,
+            'day': instance.created_at.day,
+            'minute': instance.created_at.minute,
+            'second': instance.created_at.second
+        }
     }
     print(instance.tags)
     r = redis.StrictRedis()
