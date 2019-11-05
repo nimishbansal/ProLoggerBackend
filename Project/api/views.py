@@ -13,8 +13,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from Common.utils import STATUS, SUCCESS, ERROR
+from Project.utils import LEVEL_ERROR, LEVEL_CRITICAL, LEVEL_FATAL
 from ..api.serializers import LogEntrySerializer, ProjectSerializer, LogEntryCreateSerializer
-from ..models import LogEntry, Project
+from ..models import LogEntry, Project, ExceptionStackTrace
 import logging
 
 
@@ -37,14 +38,16 @@ class LogEntryCreateView(CreateAPIView):
             r = super(LogEntryCreateView, self).create(request, *args, **kwargs)
             return Response({STATUS: SUCCESS})
         except Exception as E:
-            print("houu")
             print(E)
-            traceback.print_exc()
-            print("touu")
 
     def perform_create(self, serializer):
         try:
-            serializer.save(project_id=self.project.id)
+            log_entry = serializer.save(project_id=self.project.id)
+            exception_data = self.request.data['full_data']['exception']
+            if log_entry.level in [LEVEL_ERROR, LEVEL_CRITICAL, LEVEL_FATAL]:
+                if exception_data is not None:
+                    ExceptionStackTrace.objects.create(log_entry=log_entry, frames_data=exception_data['frames'])
+
         except Exception as E:
             print("error here")
             traceback.print_exc()
@@ -102,8 +105,5 @@ def sample(request):
     logging.getLogger('sentry_debug_logger').debug("haww", extra={"newtag": "ok"})
     a = 40
     b = 50
-    print('hehehe')
     print(a / (b - 50))
-    print("hahahah")
-    print('hohoho')
     return

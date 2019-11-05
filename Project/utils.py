@@ -14,7 +14,6 @@ ERROR = 'ERROR'
 CRITICAL = 'CRITICAL'
 FATAL = 'FATAL'
 
-
 LogEntryLevelChoices = [
     (LEVEL_NOTSET, NOTSET),
     (LEVEL_DEBUG, DEBUG),
