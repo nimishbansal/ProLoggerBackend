@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+import _thread as thread
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ProLogger.settings")
@@ -19,4 +20,9 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
+    if sys.argv.__contains__('runserver'):
+        print(os.system('sudo kill -9 `sudo lsof -t -i:6379`'))
+        print(thread.start_new_thread(os.system, ('celery -A ProLogger worker -l info',)))
+        # print(os.spawnlp(os.P_NOWAIT, 'celery -A ProLogger worker -l info'))
+
     execute_from_command_line(sys.argv)
