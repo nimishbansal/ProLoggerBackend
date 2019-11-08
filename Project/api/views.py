@@ -44,9 +44,8 @@ class LogEntryCreateView(CreateAPIView):
         try:
             log_entry = serializer.save(project_id=self.project.id)
             exception_data = self.request.data['full_data']['exception']
-            if log_entry.level in [LEVEL_ERROR, LEVEL_CRITICAL, LEVEL_FATAL]:
-                if exception_data is not None:
-                    ExceptionStackTrace.objects.create(log_entry=log_entry, frames_data=exception_data['frames'])
+            if exception_data is not None:
+                ExceptionStackTrace.objects.create(log_entry=log_entry, frames_data=exception_data['frames'])
 
         except Exception as E:
             print("error here")

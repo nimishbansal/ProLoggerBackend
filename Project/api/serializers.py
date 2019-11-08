@@ -1,5 +1,6 @@
 import json
 
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.fields import JSONField
 
@@ -27,12 +28,16 @@ class LogEntryCreateSerializer(serializers.ModelSerializer):
 
 class LogEntrySerializer(DisplaySelectedFieldMixin, serializers.ModelSerializer):
     level_name = serializers.SerializerMethodField()
-    created_at = CompleteDateTimeSerializer()
+    created_at = serializers.SerializerMethodField()
     stacktrace = serializers.SerializerMethodField()
 
     class Meta:
         fields = '__all__'
         model = LogEntry
+
+    @staticmethod
+    def get_created_at(obj):
+        return CompleteDateTimeSerializer(timezone.localtime(obj.created_at)).data
 
     @staticmethod
     def get_level_name(obj):
