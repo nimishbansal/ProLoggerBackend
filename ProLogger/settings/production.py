@@ -1,5 +1,10 @@
 from .base import *
+from utility.environment_utils import PRODUCTION
+
 print("in production")
+print(BASE_DIR)
+DEBUG = True
+ENVIRONMENT = PRODUCTION
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -15,8 +20,6 @@ DATABASES = {
     }
 }
 
-
-
-
-
-
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static_dev"),
+)

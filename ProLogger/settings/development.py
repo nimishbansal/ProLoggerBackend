@@ -1,4 +1,6 @@
 from .base import *
+from utility.environment_utils import DEVELOPMENT
+ENVIRONMENT = DEVELOPMENT
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

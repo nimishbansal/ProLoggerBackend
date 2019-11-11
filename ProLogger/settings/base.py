@@ -14,7 +14,7 @@ import os
 import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR =os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -194,3 +194,4 @@ CELERY_CACHE_BACKEND = 'django-cache'
 #     'class': 'prologgersdk.log.ProLoggerHandler',
 #     "secret_key": "1234567890"
 # }
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
