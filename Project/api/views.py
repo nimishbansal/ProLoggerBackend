@@ -14,12 +14,13 @@ from rest_framework.response import Response
 
 from Common.utils import STATUS, SUCCESS, ERROR
 from Project.utils import LEVEL_ERROR, LEVEL_CRITICAL, LEVEL_FATAL
-from ..api.serializers import LogEntrySerializer, ProjectSerializer, LogEntryCreateSerializer
+from ..api.serializers import LogEntrySerializer, ProjectSerializer, LogEntryCreateSerializer, ProjectCreateSerializer
 from ..models import LogEntry, Project, ExceptionStackTrace
 import logging
 
 
 class ProjectSecretKeyVerificationView(GenericAPIView):
+
     def post(self, request, *args, **kwargs):
         try:
             get_object_or_404(Project, secret_key=request.data['secret_key'])
@@ -62,15 +63,16 @@ class StandardPagination(PageNumberPagination):
 class ProjectListCreateView(ListCreateAPIView):
     authentication_classes = (BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProjectSerializer
 
     def get_queryset(self):
-        time.sleep(1)
         return Project.objects.filter(user=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
         print("Creating")
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        return ProjectSerializer
 
 
 class ProjectBulkDeleteView(GenericAPIView):
@@ -106,3 +108,10 @@ def sample(request):
     b = 50
     print(a / (b - 50))
     return
+
+
+class LogEntryBulkDeleteView(GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        LogEntry.objects.filter(project_id=self.kwargs['project_id'], id__in=request.data).delete()
+        return Response('', status=status.HTTP_204_NO_CONTENT)
+

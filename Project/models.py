@@ -3,8 +3,9 @@ import redis
 import requests
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.utils.crypto import get_random_string
 from django_mysql.models import JSONField
 from rest_framework.authtoken.models import Token
 
@@ -65,3 +66,8 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
     # we publish to onChat with suffix as token key
     if "onChat" + token.key in list(map(lambda x: x.decode("utf-8"), r.pubsub_channels())):
         r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
+
+
+@receiver(pre_save, sender=Project)
+def project_pre_save_hook(sender, instance, **kwargs):
+    instance.secret_key = get_random_string(length=10)

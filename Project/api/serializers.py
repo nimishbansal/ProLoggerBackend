@@ -8,10 +8,16 @@ from Project.models import LogEntry, ExceptionStackTrace, Project
 from utility.serializer_utils import DisplaySelectedFieldMixin, CompleteDateTimeSerializer
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'name',)
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'secret_key')
 
 
 class ExceptionStackTraceSerializer(serializers.ModelSerializer):
@@ -23,7 +29,7 @@ class ExceptionStackTraceSerializer(serializers.ModelSerializer):
 class LogEntryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogEntry
-        exclude = ('project_id', )
+        exclude = ('project_id',)
 
 
 class LogEntrySerializer(DisplaySelectedFieldMixin, serializers.ModelSerializer):
