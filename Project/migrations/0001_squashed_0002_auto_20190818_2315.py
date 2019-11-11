@@ -13,21 +13,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ExceptionStackTrace',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('frames_data', django_mysql.models.JSONField(blank=True, default=dict, null=True)),
-                ('log_entry', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='stacktrace', to='Project.LogEntry')),
-            ],
-        ),
-        migrations.CreateModel(
             name='LogEntry',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('project_id', models.IntegerField()),
                 ('title', models.CharField(max_length=100)),
                 ('message', models.TextField()),
-                ('level', models.IntegerField(choices=[(0, 'NOTSET'), (10, 'DEBUG'), (20, 'INFO'), (30, 'WARNING'), (40, 'ERROR'), (50, 'CRITICAL'), (50, 'FATAL')])),
+                ('level', models.IntegerField(
+                    choices=[(0, 'NOTSET'), (10, 'DEBUG'), (20, 'INFO'), (30, 'WARNING'), (40, 'ERROR'),
+                             (50, 'CRITICAL'), (50, 'FATAL')])),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('tags', django_mysql.models.JSONField(blank=True, default=dict, null=True)),
             ],
@@ -35,4 +29,13 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Log Entries',
             },
         ),
+        migrations.CreateModel(
+            name='ExceptionStackTrace',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('frames_data', django_mysql.models.JSONField(blank=True, default=dict, null=True)),
+                ('log_entry', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='stacktrace', to='Project.LogEntry')),
+            ],
+        ),
+
     ]
