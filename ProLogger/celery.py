@@ -3,7 +3,9 @@ import os
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ProLogger.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ProLogger.settings')
+from utility.environment_utils import set_settings_module
+set_settings_module()
 
 app = Celery('ProLogger')
 

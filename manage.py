@@ -3,8 +3,11 @@ import os
 import sys
 import _thread as thread
 
+from utility.environment_utils import set_settings_module
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ProLogger.settings")
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ProLogger.settings")
+    set_settings_module()
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
