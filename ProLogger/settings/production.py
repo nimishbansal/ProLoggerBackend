@@ -2,8 +2,7 @@ from .base import *
 from utility.environment_utils import PRODUCTION
 
 print("in production")
-print(BASE_DIR)
-DEBUG = True
+DEBUG = False
 ENVIRONMENT = PRODUCTION
 DATABASES = {
     'default': {
