@@ -16,3 +16,4 @@ DATABASES = {
     }
 }
 MEDIA_URL = '/media/'
+print("in development")
