@@ -13,7 +13,11 @@ from django.core.wsgi import get_wsgi_application
 
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ProLogger.settings")
 from utility.environment_utils import set_settings_module
+import socketio
+from socketio_app.views import sio
 
 set_settings_module()
 
+
 application = get_wsgi_application()
+socket_application = socketio.WSGIApp(sio, application)
