@@ -15,3 +15,4 @@ DATABASES = {
         },
     }
 }
+MEDIA_URL = '/media/'
