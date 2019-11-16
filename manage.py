@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-import os
 import sys
-import _thread as thread
-
 from utility.environment_utils import set_settings_module
 
 if __name__ == "__main__":

@@ -1,5 +1,8 @@
 from .base import *
 from utility.environment_utils import DEVELOPMENT
+import random
+
+
 ENVIRONMENT = DEVELOPMENT
 DATABASES = {
     'default': {
@@ -16,4 +19,5 @@ DATABASES = {
     }
 }
 MEDIA_URL = '/media/'
-print("in development")
+
+print("in development"+str(random.randint(1, 1000)))

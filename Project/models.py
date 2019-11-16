@@ -1,6 +1,6 @@
 import json
+
 import redis
-import requests
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -9,6 +9,7 @@ from django.utils.crypto import get_random_string
 from django_mysql.models import JSONField
 from rest_framework.authtoken.models import Token
 
+from socketio_app.views import sio
 from .utils import LogEntryLevelChoices
 
 
@@ -41,6 +42,28 @@ class ExceptionStackTrace(models.Model):
 #     if created:
 #         ExceptionStackTrace(log_entry=instance).save()
 
+def send_via_redis(instance, data):
+    r = redis.StrictRedis()
+    project = Project.objects.get(id=instance.project_id)
+    token, _ = Token.objects.get_or_create(user=project.user)
+    # we publish to onChat with suffix as token key
+    if "onChat" + token.key in list(map(lambda x: x.decode("utf-8"), r.pubsub_channels())):
+        r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
+
+
+def send_via_socket(instance, data):
+    project = Project.objects.get(id=instance.project_id)
+    token, _ = Token.objects.get_or_create(user=project.user)
+    # we publish to chat with suffix as token key
+    sio.start_background_task(target=sio.emit, args=("chat", json.dumps(data)))
+    # sio.emit("chat", json.dumps(data))
+    # from socketio_app.views import current_sid
+    # print("emitting to", current_sid)
+    # sio.emit("chat", "aww", to=current_sid)
+    # emit_data(current_sid)
+    # threading.Thread(target=emit_data, args=("kuku", )).start()
+
+
 @receiver(post_save, sender=LogEntry, dispatch_uid="log_entry_saved")
 def log_entry_post_save_hook(sender, instance, **kwargs):
     data = {
@@ -60,12 +83,8 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
         }
     }
     print(instance.tags)
-    r = redis.StrictRedis()
-    project = Project.objects.get(id=instance.project_id)
-    token, _ = Token.objects.get_or_create(user=project.user)
-    # we publish to onChat with suffix as token key
-    if "onChat" + token.key in list(map(lambda x: x.decode("utf-8"), r.pubsub_channels())):
-        r.publish(channel="onChat{}".format(token.key), message=json.dumps(data))
+    # send_via_redis(instance, data)
+    send_via_socket(instance, data)
 
 
 @receiver(pre_save, sender=Project)
