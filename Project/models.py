@@ -55,14 +55,7 @@ def send_via_socket(instance, data):
     project = Project.objects.get(id=instance.project_id)
     token, _ = Token.objects.get_or_create(user=project.user)
     # we publish to chat with suffix as token key
-    send_new_log_entry_event(json.dumps(data))
-    # sio.start_background_task(target=sio.emit, args=("chat", json.dumps(data)))
-    # sio.emit("chat", json.dumps(data))
-    # from socketio_app.views import current_sid
-    # print("emitting to", current_sid)
-    # sio.emit("chat", "aww", to=current_sid)
-    # emit_data(current_sid)
-    # threading.Thread(target=emit_data, args=("kuku", )).start()
+    send_new_log_entry_event(event_name="onChat{}".format(token.key), data=json.dumps(data))
 
 
 @receiver(post_save, sender=LogEntry, dispatch_uid="log_entry_saved")

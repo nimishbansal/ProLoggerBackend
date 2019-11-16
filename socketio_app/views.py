@@ -23,8 +23,10 @@ def on_message(sid, data):
     sio.emit("chat", "received your msg" + str(data))
     sio.emit("chat", "welcome")
 
-def new_log_entry_emit_thread(data):
-    sio.emit('chat',data)
 
-def send_new_log_entry_event(data):
-    sio.start_background_task(target=new_log_entry_emit_thread, data=data)
+def new_log_entry_emit_thread(data, event_name):
+    sio.emit(event_name, data)
+
+
+def send_new_log_entry_event(event_name, data):
+    sio.start_background_task(target=new_log_entry_emit_thread, data=data, event_name=event_name)
