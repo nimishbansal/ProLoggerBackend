@@ -27,6 +27,8 @@ class ProjectSecretKeyVerificationView(GenericAPIView):
             return Response({STATUS: SUCCESS})
         except Http404:
             return Response({STATUS: ERROR, 'message': 'No project found for this corresponding key'})
+        except Exception as E:
+            print(E)
 
 
 class LogEntryCreateView(CreateAPIView):
@@ -49,8 +51,10 @@ class LogEntryCreateView(CreateAPIView):
                 ExceptionStackTrace.objects.create(log_entry=log_entry, frames_data=exception_data['frames'])
 
         except Exception as E:
-            print("error here")
             traceback.print_exc()
+            import sys
+            exc_info = sys.exc_info()[2]
+            print("error here",exc_info.tb_lineno, exc_info.tb_frame.f_code.co_filename)
 
     def get_serializer(self, *args, **kwargs):
         return super(LogEntryCreateView, self).get_serializer(data=self.request.data['main_data'])

@@ -83,7 +83,7 @@ def log_entry_post_save_hook(sender, instance, **kwargs):
             'second': instance.created_at.second
         }
     }
-    print(instance.tags)
+    # print(instance.tags)
     # send_via_redis(instance, data)
     send_via_socket(instance, data)
 
