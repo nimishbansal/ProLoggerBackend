@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 from django_mysql.models import JSONField
 from rest_framework.authtoken.models import Token
 
-from socketio_app.views import sio
+from socketio_app.views import sio, send_new_log_entry_event
 from .utils import LogEntryLevelChoices
 
 
@@ -55,7 +55,8 @@ def send_via_socket(instance, data):
     project = Project.objects.get(id=instance.project_id)
     token, _ = Token.objects.get_or_create(user=project.user)
     # we publish to chat with suffix as token key
-    sio.start_background_task(target=sio.emit, args=("chat", json.dumps(data)))
+    send_new_log_entry_event(json.dumps(data))
+    # sio.start_background_task(target=sio.emit, args=("chat", json.dumps(data)))
     # sio.emit("chat", json.dumps(data))
     # from socketio_app.views import current_sid
     # print("emitting to", current_sid)
