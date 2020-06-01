@@ -3,6 +3,7 @@ from utility.environment_utils import PRODUCTION
 
 print("in production")
 DEBUG = True
+#DEBUG = False
 ENVIRONMENT = PRODUCTION
 DATABASES = {
     'default': {
@@ -20,5 +21,8 @@ DATABASES = {
 }
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static_dev"),
+    os.path.join('/home/ubuntu/', "static_dev"),
 )
+
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'

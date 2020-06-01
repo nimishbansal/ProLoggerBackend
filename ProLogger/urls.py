@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^auth/', include('Auth.urls')),
 ]
 
-if settings.DEBUG and settings.ENVIRONMENT == DEVELOPMENT:
+if (settings.DEBUG and settings.ENVIRONMENT == DEVELOPMENT) or True: # remove true later
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
