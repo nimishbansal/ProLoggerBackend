@@ -20,9 +20,11 @@ class Command(RunCommand):
             import threading
 
             def fun():
-                print(os.system("sudo kill -9 `sudo lsof -t -i:5000`"))
-                time.sleep(4)
-                eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), socket_application)
+                # TODO: Uncomment later for runserver
+                # print(os.system("sudo kill -9 `sudo lsof -t -i:5000`"))
+                # time.sleep(4)
+                # eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), socket_application)
+                pass
 
             t = threading.Thread(target=fun)
             t.start()

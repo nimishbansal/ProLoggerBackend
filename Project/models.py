@@ -6,7 +6,9 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.crypto import get_random_string
-from django_mysql.models import JSONField
+# from django_mysql.models import JSONField
+from jsonfield import JSONField
+
 from rest_framework.authtoken.models import Token
 
 from socketio_app.views import sio, send_new_log_entry_event

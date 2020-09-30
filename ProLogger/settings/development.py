@@ -8,8 +8,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'prologger',
-        'USER': 'root',
-        'PASSWORD': 'test',
+        'USER': 'django',
+        'PASSWORD': '123456',
         'HOST': '0.0.0.0',  # Or an IP Address that your DB is hosted on
         'PORT': '',
         'OPTIONS': {
@@ -18,6 +18,6 @@ DATABASES = {
         },
     }
 }
-MEDIA_URL = '/media/'
 
-print("in development"+str(random.randint(1, 1000)))
+
+MEDIA_URL = '/media/'

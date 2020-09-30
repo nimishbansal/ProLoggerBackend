@@ -2,6 +2,7 @@ venv/
 static/
 *.pyc/
 *.xml/
+static_dev/
 
 *.sqlite3
 *.pyc

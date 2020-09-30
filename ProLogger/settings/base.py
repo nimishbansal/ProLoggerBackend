@@ -135,11 +135,12 @@ STATIC_URL = '/static/'
 
 INSTALLED_APPS += [
     'raven.contrib.django.raven_compat',
+    'django_s3_storage',
 ]
 
 RAVEN_CONFIG = {
     'dsn': "https://1591d25912154953b7c0f1a4ad62f090@sentry.io/1442732",
-    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    'release': raven.fetch_git_sha(BASE_DIR), # different for lambda and ec2
 }
 
 REST_FRAMEWORK = {
@@ -195,4 +196,5 @@ CELERY_CACHE_BACKEND = 'django-cache'
 #     'class': 'prologgersdk.log.ProLoggerHandler',
 #     "secret_key": "1234567890"
 # }
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, "static_dev")

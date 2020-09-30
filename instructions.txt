@@ -1,0 +1,6 @@
+variables in env file are:
+
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+MSG91_API_URL=
+MSG91_AUTH_KEY=
